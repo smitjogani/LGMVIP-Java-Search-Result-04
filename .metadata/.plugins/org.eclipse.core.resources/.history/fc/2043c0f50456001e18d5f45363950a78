@@ -1,0 +1,14 @@
+package searchEngine;
+
+import java.util.Scanner;
+
+public class search {
+	public static void main(String [] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		System.err.println("Enter You want to search :"); 
+		String keyword = sc.nextLine();
+		
+		String url = "https://www.google.com/search" + "?q=" + keyword;
+	}
+}

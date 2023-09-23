@@ -1,0 +1,106 @@
+package searchEngine;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.Color;
+import javax.swing.JTextField;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JLabel;
+
+public class SearchEngine{
+		
+	private void result() throws IOException
+	{
+		String keyword = textField.getText();
+		String url = "https://www.google.com/search" + "?q=" + keyword;
+		Document doc = Jsoup.connect(url).get();
+		String html = doc.html();
+		Files.write(Paths.get("S://file.txt"),html.getBytes());
+		Elements links = doc.select("cite"); 
+		
+		for(Element link: links)
+		{
+			String text = link.text();
+			if(text.contains(">"))
+			{
+				text = text.replaceAll(">","/");
+			}
+						
+		}	
+
+	}
+	
+	private JFrame frame;
+	private JTextField textField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SearchEngine window = new SearchEngine();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public SearchEngine() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(226, 226, 226));
+		frame.getContentPane().setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(8, 15, 509, 40);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Serch");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+		btnNewButton.setBounds(525, 15, 117, 40);
+		frame.getContentPane().add(btnNewButton);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(8, 63, 634, 415);
+		frame.getContentPane().add(lblNewLabel);
+		frame.setBounds(100, 100, 683, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}

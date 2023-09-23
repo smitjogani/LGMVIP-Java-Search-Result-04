@@ -1,0 +1,24 @@
+package searchEngine;
+
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Scanner;
+
+public class search {
+	public static void main(String [] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		System.err.println("Enter You want to search :"); 
+		String keyword = sc.nextLine();
+		
+		String url = "https://www.google.com/search" + "?q=" + keyword;
+		Document doc = Jsoup.connect(url).get();
+		String html = doc.html();
+		Files.write(Path.get("S://file.txt",html.getBytes());
+		Elements links = doc.select("cite"); 
+	}
+}
